@@ -26,11 +26,18 @@ unzip /tmp/v4.3.1.zip -d /tmp
 
 # Borramos carpeta modledata
 rm -rf /var/www/moodledata
+rm -rf /var/www/html/*
 # Creamos el directorio moodledata
 mkdir /var/www/moodledata
 
 # Movemos el archivo a /var/www/html
 mv /tmp/moodle-4.3.1/* /var/www/html/
+
+chown -R www-data:www-data /var/www/html
+chown -R www-data:www-data /var/www/moodledata
+# Movemos el archivo .htaccess para las rutas permanentes
+cp -f ../htaccess/.htaccess /var/www/html
+
 
 # Comando para el archivo config.php
 sudo -u www-data php /var/www/html/admin/cli/install.php \
@@ -44,12 +51,13 @@ sudo -u www-data php /var/www/html/admin/cli/install.php \
     --dbpass=$MOODLE_DB_PASS \
     --fullname="$MOODLE_FULLNAME" \
     --shortname="$MOODLE_SHORTNAME" \
-    --sumary="$MOODLE_SUMARY" \
+    --summary="$MOODLE_SUMARY" \
     --adminuser=$MOODLE_ADMIN_USER \
     --adminpass=$MOODLE_ADMIN_PASS \
     --adminemail=$MOODLE_ADMIN_EMAIL \
     --non-interactive \
     --agree-license
+
 
 
 
